@@ -13,7 +13,7 @@ if which tmux &> /dev/null; then
   # Wrapper function for tmux.
   function _zsh_tmux_plugin_run()
   {
-    local long_sessionname=`date "+%Y%m%d%H%M%S%N$$" | shasum -a 512224`
+    local long_sessionname=`date "+%Y%m%d%H%M%S%N$$" | sha512sum`
     local tmux_sessionname=${long_sessionname[0,6]}
     local tmux_sessions=$(\tmux ls >/dev/null 2>&1 && echo true || echo false)
     # Some people seem to like tmux/iterm2 integration, maybe one day that will be me?
