@@ -24,12 +24,12 @@ if which tmux &> /dev/null; then
     # We have other arguments, just run them
     if [[ -n "$@" ]]; then
       \tmux $@
-    # Try to connect to our 'zsh_shared' session, under a new session
-    elif [[ $(\tmux ls 2>/dev/null | grep -q 'zsh_shared' && echo true || echo false) == "true" ]]; then
-      \tmux $tmux_iterm2 new-session -s $tmux_sessionname -t zsh_shared && exit
-    # Create a new zsh_shared session
+    # Try to connect to our 'ztm' session, under a new session
+    elif [[ $(\tmux ls 2>/dev/null | grep -q 'ztm' && echo true || echo false) == "true" ]]; then
+      \tmux $tmux_iterm2 new-session -s $tmux_sessionname -t ztm && exit
+    # Create a new ztm session
     else
-      \tmux $tmux_iterm2 new-session -s zsh_shared && exit
+      \tmux $tmux_iterm2 new-session -s ztm && exit
     fi
   }
 
