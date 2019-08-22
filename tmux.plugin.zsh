@@ -20,12 +20,18 @@ if which tmux &> /dev/null; then
     local tmux_iterm2=$( [ -n "$ITERM_PROFILE" ] && echo '-CC' )
     # But not today...
     tmux_iterm2=''
+    # Check for a detached ztm session
+    local tmux_ztm_exists=$(\tmux ls 2>/dev/null | grep -q ztm && echo "true" || echo "false")
+    local tmux_ztm_attached=$(\tmux ls 2>/dev/null | grep attached | grep -q ztm && echo "true" || echo "false")
 
-    # We have other arguments, just run them
+    # If we have other arguments, just run them
     if [[ -n "$@" ]]; then
       \tmux $@
-    # Try to connect to our 'ztm' session, under a new session
-    elif [[ $(\tmux ls 2>/dev/null | grep -q 'ztm' && echo true || echo false) == "true" ]]; then
+    # Try to reconnect to our detached primary session first
+    elif [[ ${tmux_ztm_attached} == "false" ]]; then
+      \tmux $tmux_iterm2 attach -t ztm && exit
+    # If the primary session is already attached, create a new child session
+    elif [[ ${tmux_ztm_exists} == "true" ]]; then
       \tmux $tmux_iterm2 new-session -s $tmux_sessionname -t ztm && exit
     # Create a new ztm session
     else
